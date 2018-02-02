@@ -107,7 +107,7 @@ class Seeder(object):
         self.quantities = {}
         self.orders = []
 
-    def add_entity(self, model, number, customFieldFormatters=None):
+    def add_entity(self, model, number, customFieldFormatters={}):
         """
         Add an order for the generation of $number records for $entity.
 
