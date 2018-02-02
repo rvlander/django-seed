@@ -27,19 +27,21 @@ class ModelSeeder(object):
 
         return func
 
-    def guess_field_formatters(self, faker):
+    def guess_field_formatters(self, faker, formatters={}):
         """
         Gets the formatter methods for each field using the guessers
         or related object fields
         :param faker: Faker factory object
         """
-        formatters = {}
         name_guesser = NameGuesser(faker)
         field_type_guesser = FieldTypeGuesser(faker)
 
         for field in self.model._meta.fields:
 
             field_name = field.name
+
+            if field_name in formatters:
+                continue
 
             if field.get_default(): 
                 formatters[field_name] = field.get_default()
@@ -121,7 +123,7 @@ class Seeder(object):
         if not isinstance(model, ModelSeeder):
             model = ModelSeeder(model)
 
-        model.field_formatters = model.guess_field_formatters(self.faker)
+        model.field_formatters = model.guess_field_formatters(self.faker, formatters=customFieldFormatters)
         if customFieldFormatters:
             model.field_formatters.update(customFieldFormatters)
 
